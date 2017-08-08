@@ -3,17 +3,19 @@ var bg = {
     Partly: "http://cdn.weatheravenue.com/img/background/background-night.jpg",
     Overcast: "https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/pjHZZl4/night-cloudy-sky-natural-speed-of-the-clouds_svukdfr2_thumbnail-full01.png",
     Cloudy:
-      "http://pre03.deviantart.net/cd6a/th/pre/i/2008/239/6/5/cloudy_night_sky_by_ramosburrito.jpg",
-    Clear: "http://clear-night.com/img/clear-night-placeholder.jpg"
+    "http://pre03.deviantart.net/cd6a/th/pre/i/2008/239/6/5/cloudy_night_sky_by_ramosburrito.jpg",
+    Clear: "http://clear-night.com/img/clear-night-placeholder.jpg",
+    Light: "http://www.fotothing.com/photos/431/4313d27bd5038d12f4c67df06032223a_b44.jpg"
   },
   day: {
     Sunny:
-      "https://report.az/storage/news/2d24481fa1ef4a20e1a703f88f8400c4/aee96c6d-d63a-4f9a-897e-3213b477b5fe.jpg",
+    "https://report.az/storage/news/2d24481fa1ef4a20e1a703f88f8400c4/aee96c6d-d63a-4f9a-897e-3213b477b5fe.jpg",
     Patchy: "https://c1.staticflickr.com/7/6125/6001185409_9d8c770255_b.jpg",
     Partly:
-      "https://ekonomski.mk/wp-content/uploads/2015/02/stabilno-vreme-so-umerena-oblachnost-184186.jpg",
+    "https://ekonomski.mk/wp-content/uploads/2015/02/stabilno-vreme-so-umerena-oblachnost-184186.jpg",
     Light:
-      "http://vunature.com/wp-content/uploads/2017/01/landscapes-nature-weather-sky-lightning-clouds-storm-rain-wallpaper-hd-for-phone-1920x1080.jpg",
+    "http://vunature.com/wp-content/uploads/2017/01/landscapes-nature-weather-sky-lightning-clouds-storm-rain-wallpaper-hd-for-phone-1920x1080.jpg",
+    Mist: "http://bsnscb.com/data/out/129/39556177-mist-wallpapers.jpg",
     Moderate: "http://wlex.images.worldnow.com/images/8306772_G.jpg"
   }
 };
@@ -21,8 +23,8 @@ var bg = {
 function getTemp(location) {
   $.getJSON(
     "https://api.apixu.com/v1/current.json?key=cb76266898e44311ac560536172707&q=" +
-      location,
-    function(data) {
+    location,
+    function (data) {
       var city = "",
         weather = "",
         condition = "",
@@ -42,38 +44,39 @@ function getTemp(location) {
       var cel = Math.round((fah - 32) * (5 / 9));
       var html = "";
 
-      html += "<h1> Current Temperature for: " + location + "</h1>";
+      html += "<h1 class='center-align'>" + location + "</h1>";
       html += "<div class='container' id='con'>";
-      html += "<h1 id='fah'>" + fah + " F</h1>";
+      html += "<img class='icon' src='" + "https://" + icon + "' alt='" + condition + "'>";
+      html += "<h1 class='center-align' id='fah'>" + fah + " °F</h1>";
       $("#f").prop("disabled", true);
       html += "</div>";
-      html += "<img src='" + "https://" + icon + "' alt='" + condition + "'>";
-      html += "<h2>" + condition + "</h2>";
+      html += "<h2 class='center-align' id='condition'>" + condition + "</h2>";
       $(".weather").html(html);
 
       if (dayCheck == 0) {
-        $("body").css("background-image", 'url("' + bg.night[str] + '")');
+        $(".background-image").css("background-image", 'url("' + bg.night[str] + '")');
       } else {
-        $("body").css("background-image", 'url("' + bg.day[str] + '")');
+        $(".background-image").css("background-image", 'url("' + bg.day[str] + '")');
       }
 
-      $("#c").click(function() {
+      $("#c").click(function () {
         $(this).prop("disabled", true);
         $("#f").prop("disabled", false);
         $("#fah").remove();
-        $("#con").append("<h1 id='cel'>" + cel + " C</h1>");
+        $("#con").append("<h1 class='center-align' id='cel'>" + cel + " °C</h1>");
       });
-      $("#f").click(function() {
+      $("#f").click(function () {
         $(this).prop("disabled", true);
         $("#c").prop("disabled", false);
         $("#cel").remove();
-        $("#con").append("<h1 id='fah'>" + fah + " F</h1>");
+        $("#con").append("<h1 class='center-align' id='fah'>" + fah + " °F</h1>");
       });
     }
   );
 }
-$(document).ready(function() {
-  $.getJSON("https://ipapi.co/json/", function(data) {
+
+$(document).ready(function () {
+  $.getJSON("https://ipapi.co/json/", function (data) {
     city = data.city;
     getTemp(city);
   });
